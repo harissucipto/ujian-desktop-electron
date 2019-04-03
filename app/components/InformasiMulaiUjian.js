@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, List, Avatar, Button } from 'antd';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { withRouter } from 'react-router-dom';
 
 const INFO_UJIAN_QUERY = gql`
   query INFO_UJIAN_QUERY($id: String!, $jwt: String!) {
@@ -55,7 +56,20 @@ const InformasiUjian = props => {
               </p>
             </div>
 
-            <Button type="primary" size="large" block>
+            <Button
+              type="primary"
+              size="large"
+              block
+              onClick={() => {
+                props.history.push({
+                  pathname: '/ujian',
+                  state: {
+                    id,
+                    jwt
+                  }
+                });
+              }}
+            >
               Mulai Ujian
             </Button>
           </Card>
@@ -65,4 +79,4 @@ const InformasiUjian = props => {
   );
 };
 
-export default InformasiUjian;
+export default withRouter(InformasiUjian);

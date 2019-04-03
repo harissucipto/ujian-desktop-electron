@@ -58,8 +58,8 @@ const SubLogo = styled.div`
 class Login extends Component {
   state = {
     email: 'mahasiswa1@gmail.com',
-    password: '',
-    pinUjian: 'eSOw3k7z0'
+    password: '23',
+    pinUjian: 'XKXTZnbHp'
   };
 
   saveToState = e => {
