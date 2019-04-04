@@ -20,7 +20,9 @@ const INFO_UJIAN_QUERY = gql`
       jawaban {
         id
         idSoal
+        idJawaban
         jawaban
+        pegangan
       }
     }
   }

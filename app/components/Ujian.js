@@ -14,14 +14,15 @@ const { Header, Content } = Layout;
 
 class AppUjian extends Component {
   state = {
+    id: undefined,
     soals: [],
     tampilkan: 0,
     jawaban: []
   };
 
   componentWillMount() {
-    const { soals, jawaban } = this.props.bankSoal;
-    this.setState({ soals, tampilkan: soals[0].id, jawaban });
+    const { soals, jawaban, id } = this.props.bankSoal;
+    this.setState({ soals, tampilkan: soals[0].id, jawaban, id });
   }
 
   pindahSoal = id => this.setState({ tampilkan: id });
@@ -54,6 +55,7 @@ class AppUjian extends Component {
                 }
                 jawaban={this.state.jawaban}
                 menjawab={this.menjawabSoal}
+                id={this.state.id}
               />
             </Col>
             <Col xs={24} md={6}>
