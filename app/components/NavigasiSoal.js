@@ -11,7 +11,7 @@ const InformasiUjian = props => {
           type={
             tampilkan === soal.id
               ? 'default'
-              : jawaban.filter(jawab => jawab.soal === soal.id).length
+              : jawaban.filter(jawab => jawab.idSoal === soal.id).length
               ? 'danger'
               : 'primary'
           }

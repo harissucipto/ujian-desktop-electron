@@ -30,7 +30,7 @@ class AppUjian extends Component {
   menjawabSoal = jawab => {
     // pishakan jawaban berupa idsoal, jawaban
     const jawabanLama = this.state.jawaban.filter(
-      item => item.soal !== jawab.soal
+      item => item.idSoal !== jawab.idSoal
     );
     this.setState({ jawaban: [...jawabanLama, jawab] });
   };

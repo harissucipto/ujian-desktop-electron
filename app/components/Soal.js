@@ -21,8 +21,6 @@ const INFO_UJIAN_QUERY = gql`
         id
         idSoal
         idJawaban
-        jawaban
-        pegangan
       }
     }
   }

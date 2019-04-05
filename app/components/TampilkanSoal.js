@@ -1,27 +1,25 @@
 import React from 'react';
 import { Card, List, Avatar, Button, Input } from 'antd';
 import gql from 'graphql-tag';
-import { Query, ApolloConsumer } from 'react-apollo';
-import shortid from 'shortid';
+import { ApolloConsumer } from 'react-apollo';
 
-const MUTATION_UPDATE_JAWABAN = gql`
-  mutation MUTATION_UPDATE_JAWABAN(
-    $idSoalMahasiswa: String!
-    $idJawaban: String!
+const UPDATE_JAWABAN = gql`
+  mutation UPDATE_JAWABAN(
+    $idSoalMahasiswa: ID!
     $idSoal: String!
-    $jawaban: String!
+    $idJawaban: String!
   ) {
     updateSoalMahasiswa(
-      where: { id: $idSoalMahasiswa }
       data: {
         jawaban: {
           upsert: {
-            where: { pegangan: $idJawaban }
-            create: { idSoal: $idSoal, jawaban: $jawaban, pegangan: $idJawaban }
-            update: { jawaban: $jawaban }
+            where: { idSoal: $idSoal }
+            create: { idSoal: $idSoal, idJawaban: $idJawaban }
+            update: { idJawaban: $idJawaban }
           }
         }
       }
+      where: { id: $idSoalMahasiswa }
     ) {
       id
     }
@@ -32,14 +30,18 @@ const TampilkanSoal = props => {
   console.log(props, 'ini props tampilkan soal');
   const { pertanyaan, jawaban } = props.soal;
 
-  const updateJawabanDb = (client, idJawaban, jawaban) => {
+  const updateJawabanDb = async (client, idJawaban) => {
     const ngejawab = {
       idSoalMahasiswa: props.id,
       idSoal: props.soal.id,
-      idJawaban,
-      jawaban
+      idJawaban
     };
-    console.log(ngejawab);
+    await client.mutate({
+      mutation: UPDATE_JAWABAN,
+      variables: ngejawab
+    });
+
+    console.log(client, 'ini client');
   };
 
   return (
@@ -54,13 +56,13 @@ const TampilkanSoal = props => {
                 <Button
                   type={
                     props.jawaban.filter(item =>
-                      item ? item.jawaban.idJawaban === jawab.id : false
+                      item ? item.idJawaban === jawab.id : false
                     ).length
                       ? 'primary'
                       : 'danger'
                   }
-                  onClick={async () => {
-                    await updateJawabanDb(client, 'eree', 'd');
+                  onClick={() => {
+                    updateJawabanDb(client, jawab.id);
                     /*
                       prop dari jawaban
                         id
@@ -70,8 +72,8 @@ const TampilkanSoal = props => {
                         pegangan
                     */
                     props.menjawab({
-                      soal: props.soal.id,
-                      jawaban: { idJawaban: jawab.id, jawaban: jawab.title }
+                      idSoal: props.soal.id,
+                      idJawaban: jawab.id
                     });
                   }}
                 >
