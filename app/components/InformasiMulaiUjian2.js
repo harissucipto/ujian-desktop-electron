@@ -1,10 +1,12 @@
 import React from 'react';
 import { Card, List, Avatar, Button } from 'antd';
-import { Query } from 'react-apollo';
+import { Query, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withRouter, Redirect } from 'react-router-dom';
 import Countdown from 'react-countdown-now';
 import moment from 'moment-timezone';
+
+import { CREATE_SKOR } from './AkhiriUjian';
 
 require('moment/locale/id');
 
@@ -30,6 +32,7 @@ const QueryInfoUjian = props => (
 );
 
 const InformasiUjian = props => {
+  console.log('ini props saya', props);
   const { id, jwt } = props;
   if (!id || !jwt) return <p>Error, Anda Tidak boleh curang...</p>;
 
@@ -53,12 +56,22 @@ const InformasiUjian = props => {
             return (
               <div>
                 <p>Sisa Waktu Ujian</p>
-                <Countdown
-                  onComplete={() => {
-                    props.history.push('/');
-                  }}
-                  date={moment(moment.unix(durasiPengerjaan).format())}
-                />
+                <ApolloConsumer>
+                  {client => (
+                    <Countdown
+                      onComplete={async () => {
+                        await client.mutate({
+                          mutation: CREATE_SKOR,
+                          variables: {
+                            soalMahasiswa: props.soalMahasiswa
+                          }
+                        });
+                        props.history.push('/');
+                      }}
+                      date={moment(moment.unix(durasiPengerjaan).format())}
+                    />
+                  )}
+                </ApolloConsumer>
 
                 <Button
                   type="primary"

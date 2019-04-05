@@ -42,3 +42,4 @@ const TampilkanSoal = props => (
 );
 
 export default withRouter(TampilkanSoal);
+export { CREATE_SKOR };

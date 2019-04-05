@@ -5,7 +5,7 @@ import { Layout, Row, Col, Button } from 'antd';
 import { Logo } from './Login';
 import NavigasiSoal from './NavigasiSoal';
 import TampilkanSoal from './TampilkanSoal';
-import InformasiMulaiUjian from './InformasiMulaiUjian';
+import InformasiMulaiUjian from './InformasiMulaiUjian2';
 import AkhiriUjian from './AkhiriUjian';
 
 import Soal from './Soal';
@@ -44,7 +44,11 @@ class AppUjian extends Component {
         <div style={{ margin: '2rem' }}>
           <Row type="flex" gutter={40}>
             <Col xs={24} md={6}>
-              <InformasiMulaiUjian id={id} jwt={jwt} />
+              <InformasiMulaiUjian
+                id={id}
+                jwt={jwt}
+                soalMahasiswa={this.state.id}
+              />
             </Col>
             <Col xs={24} md={12}>
               <TampilkanSoal
