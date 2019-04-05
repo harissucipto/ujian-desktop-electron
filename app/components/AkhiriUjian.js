@@ -25,7 +25,13 @@ const TampilkanSoal = props => (
           size="large"
           onClick={async () => {
             const nilaiSkor = await createSkor();
-            console.log(nilaiSkor, 'nilai skor saya adalah ini dia');
+            props.history.push({
+              pathname: '/hasil',
+              state: {
+                idSoalMahasiswa: props.id,
+                idSkor: nilaiSkor.data.createSkor.id
+              }
+            });
           }}
         >
           Akhiri Ujian
