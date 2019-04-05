@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link, withRouter, Redirect } from 'react-router-dom';
-import { Layout, Row, Col } from 'antd';
+import { Layout, Row, Col, Button } from 'antd';
 
-import { Logo, SubLogo } from './Login';
+import { Logo } from './Login';
 import NavigasiSoal from './NavigasiSoal';
 import TampilkanSoal from './TampilkanSoal';
 import InformasiMulaiUjian from './InformasiMulaiUjian';
-import InformasiPeserta from './InformasiPeserta';
+import AkhiriUjian from './AkhiriUjian';
 
 import Soal from './Soal';
 
@@ -65,6 +65,7 @@ class AppUjian extends Component {
                 navigasi={this.pindahSoal}
                 jawaban={this.state.jawaban}
               />
+              <AkhiriUjian id={this.state.id} />
             </Col>
           </Row>
         </div>

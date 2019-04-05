@@ -7,15 +7,18 @@ const UPDATE_JAWABAN = gql`
   mutation UPDATE_JAWABAN(
     $idSoalMahasiswa: ID!
     $idSoal: String!
-    $idJawaban: String!
+    $idJawaban: ID!
   ) {
     updateSoalMahasiswa(
       data: {
         jawaban: {
           upsert: {
             where: { idSoal: $idSoal }
-            create: { idSoal: $idSoal, idJawaban: $idJawaban }
-            update: { idJawaban: $idJawaban }
+            create: {
+              idSoal: $idSoal
+              jawaban: { connect: { id: $idJawaban } }
+            }
+            update: { jawaban: { connect: { id: $idJawaban } } }
           }
         }
       }
@@ -56,7 +59,7 @@ const TampilkanSoal = props => {
                 <Button
                   type={
                     props.jawaban.filter(item =>
-                      item ? item.idJawaban === jawab.id : false
+                      item !== null ? item.jawaban.id === jawab.id : false
                     ).length
                       ? 'primary'
                       : 'danger'
@@ -73,7 +76,7 @@ const TampilkanSoal = props => {
                     */
                     props.menjawab({
                       idSoal: props.soal.id,
-                      idJawaban: jawab.id
+                      jawaban: { id: jawab.id, title: jawab.title }
                     });
                   }}
                 >
