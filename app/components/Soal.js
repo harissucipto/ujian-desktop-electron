@@ -19,6 +19,7 @@ const INFO_UJIAN_QUERY = gql`
       }
       jawaban {
         id
+        pegangan
         idSoal
         jawaban {
           id

@@ -59,7 +59,7 @@ class Login extends Component {
   state = {
     email: 'mahasiswa1@gmail.com',
     password: '23',
-    pinUjian: 'QJHqqJks1'
+    pinUjian: 'XqH62jUC2'
   };
 
   saveToState = e => {

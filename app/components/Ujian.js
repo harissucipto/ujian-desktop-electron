@@ -29,6 +29,8 @@ class AppUjian extends Component {
 
   menjawabSoal = jawab => {
     // pishakan jawaban berupa idsoal, jawaban
+
+    console.log('jawab', jawab);
     const jawabanLama = this.state.jawaban.filter(
       item => item.idSoal !== jawab.idSoal
     );

@@ -60,13 +60,19 @@ const InformasiUjian = props => {
                   {client => (
                     <Countdown
                       onComplete={async () => {
-                        await client.mutate({
+                        const nilaiSkor = await client.mutate({
                           mutation: CREATE_SKOR,
                           variables: {
                             soalMahasiswa: props.soalMahasiswa
                           }
                         });
-                        props.history.push('/');
+                        props.history.push({
+                          pathname: '/hasil',
+                          state: {
+                            idSoalMahasiswa: props.soalMahasiswa,
+                            idSkor: nilaiSkor.data.createSkor.id
+                          }
+                        });
                       }}
                       date={moment(moment.unix(durasiPengerjaan).format())}
                     />

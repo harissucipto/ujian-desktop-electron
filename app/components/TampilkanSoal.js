@@ -2,21 +2,26 @@ import React from 'react';
 import { Card, List, Avatar, Button, Input } from 'antd';
 import gql from 'graphql-tag';
 import { ApolloConsumer } from 'react-apollo';
+import { ConvertFromRaw, EditorState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import shortid from 'shortid';
 
 const UPDATE_JAWABAN = gql`
   mutation UPDATE_JAWABAN(
     $idSoalMahasiswa: ID!
     $idSoal: String!
     $idJawaban: ID!
+    $pegangan: String!
   ) {
     updateSoalMahasiswa(
       data: {
         jawaban: {
           upsert: {
-            where: { idSoal: $idSoal }
+            where: { pegangan: $pegangan }
             create: {
               idSoal: $idSoal
               jawaban: { connect: { id: $idJawaban } }
+              pegangan: $pegangan
             }
             update: { jawaban: { connect: { id: $idJawaban } } }
           }
@@ -33,23 +38,34 @@ const TampilkanSoal = props => {
   console.log(props, 'ini props tampilkan soal');
   const { pertanyaan, jawaban } = props.soal;
 
-  const updateJawabanDb = async (client, idJawaban) => {
+  const updateJawabanDb = async (client, idJawaban, pegangan) => {
     const ngejawab = {
       idSoalMahasiswa: props.id,
       idSoal: props.soal.id,
-      idJawaban
+      idJawaban,
+      pegangan
     };
+
+    console.log(ngejawab, 'ngejawab');
     await client.mutate({
       mutation: UPDATE_JAWABAN,
       variables: ngejawab
     });
-
-    console.log(client, 'ini client');
   };
+
+  const findJawaban = props.jawaban.filter(
+    item => item.idSoal === props.soal.id
+  );
+  const pegangan = findJawaban[0]
+    ? findJawaban[0].pegangan || shortid()
+    : shortid();
+  console.log(pegangan, 'ini peganganku');
 
   return (
     <Card title="Tampilkan Soal disini">
-      <div>{pertanyaan} </div>
+      <div className="readonly-editor">
+        <Editor toolbarHidden readOnly contentState={JSON.parse(pertanyaan)} />
+      </div>
       <div>
         <h3>Pilihan Jawaban</h3>
         {jawaban.map(jawab => (
@@ -65,7 +81,8 @@ const TampilkanSoal = props => {
                       : 'danger'
                   }
                   onClick={() => {
-                    updateJawabanDb(client, jawab.id);
+                    console.log(jawab.pegangan, 'dari jawaban');
+                    updateJawabanDb(client, jawab.id, pegangan);
                     /*
                       prop dari jawaban
                         id
@@ -76,6 +93,7 @@ const TampilkanSoal = props => {
                     */
                     props.menjawab({
                       idSoal: props.soal.id,
+                      pegangan,
                       jawaban: { id: jawab.id, title: jawab.title }
                     });
                   }}
@@ -85,7 +103,13 @@ const TampilkanSoal = props => {
               )}
             </ApolloConsumer>
 
-            <p>{jawab.content}</p>
+            <div className="readonly-editor">
+              <Editor
+                toolbarHidden
+                readOnly
+                initialContentState={JSON.parse(jawab.content)}
+              />
+            </div>
           </div>
         ))}
       </div>
