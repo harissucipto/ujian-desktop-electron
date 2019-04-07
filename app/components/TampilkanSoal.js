@@ -12,6 +12,7 @@ const UPDATE_JAWABAN = gql`
     $idSoal: String!
     $idJawaban: ID!
     $pegangan: String!
+    $ujian: ID!
   ) {
     updateSoalMahasiswa(
       data: {
@@ -21,6 +22,7 @@ const UPDATE_JAWABAN = gql`
             create: {
               idSoal: $idSoal
               jawaban: { connect: { id: $idJawaban } }
+              ujian: { connect: { id: $ujian } }
               pegangan: $pegangan
             }
             update: { jawaban: { connect: { id: $idJawaban } } }
@@ -42,6 +44,7 @@ const TampilkanSoal = props => {
     const ngejawab = {
       idSoalMahasiswa: props.id,
       idSoal: props.soal.id,
+      ujian: props.ujian,
       idJawaban,
       pegangan
     };
