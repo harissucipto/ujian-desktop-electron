@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, List, Avatar, Button, Input } from 'antd';
+import { Card, List, Avatar, Button, Input, Row, Col } from 'antd';
 import gql from 'graphql-tag';
 import { ApolloConsumer } from 'react-apollo';
 import { ConvertFromRaw, EditorState } from 'draft-js';
@@ -38,7 +38,7 @@ const UPDATE_JAWABAN = gql`
 
 const TampilkanSoal = props => {
   console.log(props, 'ini props tampilkan soal');
-  const { pertanyaan, jawaban } = props.soal;
+  const { pertanyaan, jawaban, image } = props.soal;
 
   const updateJawabanDb = async (client, idJawaban, pegangan) => {
     const ngejawab = {
@@ -66,27 +66,44 @@ const TampilkanSoal = props => {
 
   return (
     <Card title="Tampilkan Soal disini">
-      <div className="readonly-editor">
-        <Editor toolbarHidden readOnly contentState={JSON.parse(pertanyaan)} />
-      </div>
-      <div>
-        <h3>Pilihan Jawaban</h3>
+      <Row>
+        {image && (
+          <img
+            src={`${image}?${Date.now()}`}
+            width={200}
+            alt="Gambar pertanyaan"
+          />
+        )}
+      </Row>
+      <Row>
+        <div className="readonly-editor">
+          <Editor
+            toolbarHidden
+            readOnly
+            contentState={JSON.parse(pertanyaan)}
+          />
+        </div>
+      </Row>
+
+      <div style={{ marginTop: '20px' }}>
         {jawaban.map(jawab => (
           <div key={jawab.id}>
-            <ApolloConsumer>
-              {client => (
-                <Button
-                  type={
-                    props.jawaban.filter(item =>
-                      item !== null ? item.jawaban.id === jawab.id : false
-                    ).length
-                      ? 'primary'
-                      : 'danger'
-                  }
-                  onClick={() => {
-                    console.log(jawab.pegangan, 'dari jawaban');
-                    updateJawabanDb(client, jawab.id, pegangan);
-                    /*
+            <Row>
+              <Col span={2}>
+                <ApolloConsumer>
+                  {client => (
+                    <Button
+                      type={
+                        props.jawaban.filter(item =>
+                          item !== null ? item.jawaban.id === jawab.id : false
+                        ).length
+                          ? 'primary'
+                          : 'danger'
+                      }
+                      onClick={() => {
+                        console.log(jawab.pegangan, 'dari jawaban');
+                        updateJawabanDb(client, jawab.id, pegangan);
+                        /*
                       prop dari jawaban
                         id
                         idSoal
@@ -94,25 +111,38 @@ const TampilkanSoal = props => {
                         jawaban
                         pegangan
                     */
-                    props.menjawab({
-                      idSoal: props.soal.id,
-                      pegangan,
-                      jawaban: { id: jawab.id, title: jawab.title }
-                    });
-                  }}
-                >
-                  {jawab.title}
-                </Button>
-              )}
-            </ApolloConsumer>
+                        props.menjawab({
+                          idSoal: props.soal.id,
+                          pegangan,
+                          jawaban: { id: jawab.id, title: jawab.title }
+                        });
+                      }}
+                    >
+                      {jawab.title}
+                    </Button>
+                  )}
+                </ApolloConsumer>
+              </Col>
 
-            <div className="readonly-editor">
-              <Editor
-                toolbarHidden
-                readOnly
-                initialContentState={JSON.parse(jawab.content)}
-              />
-            </div>
+              <Col span={22}>
+                <Row>
+                  {jawab.image && (
+                    <img
+                      src={`${jawab.image}?${Date.now()}`}
+                      width={200}
+                      alt="Gambar pertanyaan"
+                    />
+                  )}
+                </Row>
+                <div className="readonly-editor">
+                  <Editor
+                    toolbarHidden
+                    readOnly
+                    initialContentState={JSON.parse(jawab.content)}
+                  />
+                </div>
+              </Col>
+            </Row>
           </div>
         ))}
       </div>

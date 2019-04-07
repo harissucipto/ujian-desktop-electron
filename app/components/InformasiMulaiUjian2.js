@@ -78,23 +78,6 @@ const InformasiUjian = props => {
                     />
                   )}
                 </ApolloConsumer>
-
-                <Button
-                  type="primary"
-                  size="large"
-                  block
-                  onClick={() => {
-                    props.history.push({
-                      pathname: '/ujian',
-                      state: {
-                        id,
-                        jwt
-                      }
-                    });
-                  }}
-                >
-                  Kerjakan
-                </Button>
               </div>
             );
           }

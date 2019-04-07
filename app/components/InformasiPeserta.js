@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, List, Avatar } from 'antd';
+import { Card, List, Avatar, Spin } from 'antd';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -9,6 +9,7 @@ const INFO_UJIAN_QUERY = gql`
       id
       email
       mahasiswa {
+        image
         id
         nama
         nim
@@ -34,7 +35,7 @@ const InformasiUjian = props => {
   return (
     <QueryInfoUjian id={id} jwt={jwt}>
       {({ data, loading, error }) => {
-        if (loading) return <p>loading...</p>;
+        if (loading) return <Spin />;
         if (error) console.log(error);
         if (error) return <p>Error</p>;
         console.log(data);
@@ -42,61 +43,34 @@ const InformasiUjian = props => {
         const { infoPesertaUjian } = data;
 
         return (
-          <Card
-            cover={
-              infoPesertaUjian.mahasiswa.gambar ? (
-                <img
-                  alt="example"
-                  src={infoPesertaUjian.mahasiswa.gambar}
-                  width="100"
-                  height="200"
+          <Card title="Informasi Peserta Ujian " loading={loading}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Avatar shape="square" src={infoPesertaUjian.mahasiswa.image} size={200} />
+            </div>
+
+            <List>
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<Avatar icon="user" />}
+                  title="Nama"
+                  description={infoPesertaUjian.mahasiswa.nama}
                 />
-              ) : (
-                <div
-                  style={{
-                    height: '200px',
-                    display: 'flex',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <Avatar
-                    icon="user"
-                    shape="square"
-                    size={200}
-                    style={{ textAlign: 'center' }}
-                  />
-                </div>
-              )
-            }
-            title="Informasi Peserta Ujian "
-          >
-            <Card.Meta
-              description={
-                <List>
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar icon="user" />}
-                      title="Nama"
-                      description={infoPesertaUjian.mahasiswa.nama}
-                    />
-                  </List.Item>
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar icon="info" />}
-                      title="NIM"
-                      description={infoPesertaUjian.mahasiswa.nim}
-                    />
-                  </List.Item>
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar icon="mail" />}
-                      title="Email"
-                      description={infoPesertaUjian.email}
-                    />
-                  </List.Item>
-                </List>
-              }
-            />
+              </List.Item>
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<Avatar icon="info" />}
+                  title="NIM"
+                  description={infoPesertaUjian.mahasiswa.nim}
+                />
+              </List.Item>
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<Avatar icon="mail" />}
+                  title="Email"
+                  description={infoPesertaUjian.email}
+                />
+              </List.Item>
+            </List>
           </Card>
         );
       }}

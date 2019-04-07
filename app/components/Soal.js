@@ -13,8 +13,10 @@ const INFO_UJIAN_QUERY = gql`
       }
       soals {
         id
+        image
         pertanyaan
         jawaban {
+          image
           id
           content
           title
