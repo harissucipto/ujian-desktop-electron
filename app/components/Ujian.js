@@ -109,7 +109,7 @@ const Persiapan = props => {
         <div>
           <Logo>
             <img src="./logo.svg" alt="logo" />
-            <h1 style={{ color: 'white' }}>CBT FMIPA UR Ujian</h1>
+            <h1 style={{ color: 'white' }}>CBT FMIPA UR</h1>
           </Logo>
         </div>
       </Header>

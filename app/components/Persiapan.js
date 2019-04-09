@@ -35,7 +35,6 @@ const Persiapan = props => {
         </div>
         <h2 style={{ color: 'white' }}>
           Informasi Ujian yang akan dilaksanakan
-          <Link to="/">ke home</Link>
         </h2>
       </Header>
       <Content>

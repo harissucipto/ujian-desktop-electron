@@ -51,7 +51,14 @@ const InformasiUjian = props => {
           if (completed) {
             // Render a completed state
             return (
-              <div>
+              <div
+                style={{
+                  fontSize: '30px',
+                  padding: '10px',
+                  fontWeight: 700,
+                  color: 'blue'
+                }}
+              >
                 <p>Sisa Waktu Ujian</p>
                 <Countdown
                   onComplete={() => {
@@ -61,6 +68,7 @@ const InformasiUjian = props => {
                 />
 
                 <Button
+                  style={{ marginTop: '10px' }}
                   type="primary"
                   size="large"
                   block
@@ -81,8 +89,17 @@ const InformasiUjian = props => {
           }
           // Render a countdown
           return (
-            <span>
-              <p>Hitung mundur waktu pelaksanaan</p>
+            <span
+              style={{
+                fontSize: '30px',
+                padding: '10px',
+                fontWeight: 700,
+                color: 'blue'
+              }}
+            >
+              <h1 style={{ fontSize: '20px', color: 'goldenrod' }}>
+                Hitung mundur waktu pelaksanaan
+              </h1>
               {hours}:{minutes}:{seconds}
             </span>
           );
@@ -94,8 +111,7 @@ const InformasiUjian = props => {
               style={{
                 textAlign: 'center',
                 border: '2px solid black',
-                paddingTop: '1rem',
-                marginBottom: '1rem'
+                padding: '40px'
               }}
             >
               <Countdown

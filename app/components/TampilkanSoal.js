@@ -65,7 +65,7 @@ const TampilkanSoal = props => {
   console.log(pegangan, 'ini peganganku');
 
   return (
-    <Card title="Tampilkan Soal disini">
+    <Card title="Tampilan Soal">
       <Row>
         {image && (
           <img

@@ -6,6 +6,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 import Countdown from 'react-countdown-now';
 import moment from 'moment-timezone';
 
+import { height } from 'window-size';
 import { CREATE_SKOR } from './AkhiriUjian';
 
 require('moment/locale/id');
@@ -50,12 +51,21 @@ const InformasiUjian = props => {
           moment(infoUjian.tanggalPelaksanaan).unix() +
           Number(infoUjian.durasiPengerjaan) * 60;
 
-        const renderer = ({ hours, minutes, seconds, completed }) => {
+        const renderer = ({ days, hours, minutes, seconds, completed }) => {
           if (completed) {
             // Render a completed state
             return (
-              <div>
-                <p>Sisa Waktu Ujian</p>
+              <div
+                style={{
+                  fontSize: '30px',
+                  padding: '10px',
+                  fontWeight: 700,
+                  color: 'blue'
+                }}
+              >
+                <p style={{ fontSize: '20px', color: 'goldenrod' }}>
+                  Sisa Waktu Ujian
+                </p>
                 <ApolloConsumer>
                   {client => (
                     <Countdown
@@ -66,11 +76,12 @@ const InformasiUjian = props => {
                             soalMahasiswa: props.soalMahasiswa
                           }
                         });
+
                         props.history.push({
                           pathname: '/hasil',
                           state: {
-                            idSoalMahasiswa: props.soalMahasiswa,
-                            idSkor: nilaiSkor.data.createSkor.id
+                            idSoalMahasiswa: nilaiSkor.data.createSkor.id,
+                            idUjian: nilaiSkor.data.createSkor.ujian.id
                           }
                         });
                       }}
@@ -83,9 +94,18 @@ const InformasiUjian = props => {
           }
           // Render a countdown
           return (
-            <span>
-              <p>Hitung mundur waktu pelaksanaan</p>
-              {hours}:{minutes}:{seconds}
+            <span
+              style={{
+                fontSize: '30px',
+                padding: '10px',
+                fontWeight: 700,
+                color: 'blue'
+              }}
+            >
+              <p style={{ fontSize: '20px', color: 'goldenrod' }}>
+                Hitung mundur waktu pelaksanaan
+              </p>
+              {days}, {hours}:{minutes}:{seconds}
             </span>
           );
         };
@@ -96,8 +116,7 @@ const InformasiUjian = props => {
               style={{
                 textAlign: 'center',
                 border: '2px solid black',
-                paddingTop: '1rem',
-                marginBottom: '1rem'
+                padding: '40px'
               }}
             >
               <Countdown

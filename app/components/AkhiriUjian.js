@@ -1,5 +1,14 @@
 import React from 'react';
-import { Card, List, Avatar, Button, Input } from 'antd';
+import {
+  Card,
+  List,
+  Avatar,
+  Button,
+  Input,
+  Spin,
+  Popconfirm,
+  Icon
+} from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
@@ -8,7 +17,10 @@ const CREATE_SKOR = gql`
   mutation CREATE_SKOR($soalMahasiswa: ID!) {
     createSkor(soalMahasiswa: $soalMahasiswa) {
       id
-      nilai
+      skor
+      ujian {
+        id
+      }
     }
   }
 `;
@@ -16,26 +28,38 @@ const CREATE_SKOR = gql`
 const TampilkanSoal = props => (
   <Mutation mutation={CREATE_SKOR} variables={{ soalMahasiswa: props.id }}>
     {(createSkor, { error, loading, data }) => {
-      if (loading) return <p> loading...</p>;
+      if (loading) return <Spin tip="Loading..." />;
       if (error) console.log(error, 'eror skor');
 
       return (
-        <Button
-          type="danger"
-          size="large"
-          onClick={async () => {
-            const nilaiSkor = await createSkor();
+        <Popconfirm
+          title="Anda ingin mengakhiri ujian？"
+          icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
+          onConfirm={async () => {
+            const { data } = await createSkor();
             props.history.push({
               pathname: '/hasil',
               state: {
-                idSoalMahasiswa: props.id,
-                idSkor: nilaiSkor.data.createSkor.id
+                idSoalMahasiswa: data.createSkor.id,
+                idUjian: data.createSkor.ujian.id
               }
             });
           }}
         >
-          Akhiri Ujian
-        </Button>
+          <Button
+            style={{
+              marginTop: '20px',
+              height: '100px',
+              width: '100%',
+              fontWeight: 700,
+              fontSize: '20px'
+            }}
+            type="danger"
+            size="large"
+          >
+            Akhiri Ujian
+          </Button>
+        </Popconfirm>
       );
     }}
   </Mutation>

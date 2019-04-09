@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter, Redirect } from 'react-router-dom';
-import { Layout, Row, Col, Card, List, Avatar, Button } from 'antd';
+import { Layout, Row, Col, Card, List, Avatar, Button, Spin } from 'antd';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -9,20 +9,29 @@ import { Logo, SubLogo } from './Login';
 const { Header, Content } = Layout;
 
 const GET_SKOR = gql`
-  query GET_SKOR($id: ID!) {
-    skor(where: { id: $id }) {
+  query GET_SKOR($idSoalMahasiswa: ID!, $idUjian: ID!) {
+    getInfosoalMahasiswa(
+      where: { AND: [{ id: $idSoalMahasiswa }, { ujian: { id: $idUjian } }] }
+    ) {
       id
-      nilai
-      soalMahasiswa {
-        mahasiswa {
+      skor
+      ujian {
+        id
+        nama
+        kelas {
           id
           nama
-          nim
-          user {
+          mataKuliah {
             id
-            email
+            nama
           }
         }
+      }
+      mahasiswa {
+        id
+        nama
+        image
+        nim
       }
     }
   }
@@ -31,8 +40,8 @@ const GET_SKOR = gql`
 const Hasil = props => {
   if (!props.history.location.state) return <Redirect to="/" />;
 
-  const { idSkor } = props.history.location.state;
-  console.log(idSkor, 'ini id skor');
+  const { idSoalMahasiswa, idUjian } = props.history.location.state;
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header
@@ -52,101 +61,55 @@ const Hasil = props => {
       </Header>
       <Content>
         <div style={{ margin: '2rem' }}>
-          <Query query={GET_SKOR} variables={{ id: idSkor }}>
+          <Query query={GET_SKOR} variables={{ idSoalMahasiswa, idUjian }}>
             {({ data, error, loading }) => {
-              if (loading) return <p>loading...</p>;
-              console.log(error);
+              if (loading) return <Spin tip={loading} />;
 
-              const { skor } = data;
+              const [soalMahasiswa] = data.getInfosoalMahasiswa;
 
               return (
-                <Row type="flex" gutter={40}>
-                  <Col xs={24} md={6}>
-                    <Card
-                      cover={
-                        skor.soalMahasiswa.mahasiswa.gambar ? (
-                          <img
-                            alt="example"
-                            src={skor.mahasiswa.gambar}
-                            width="100"
-                            height="200"
-                          />
-                        ) : (
-                          <div
-                            style={{
-                              height: '200px',
-                              display: 'flex',
-                              justifyContent: 'center'
-                            }}
-                          >
-                            <Avatar
-                              icon="user"
-                              shape="square"
-                              size={200}
-                              style={{ textAlign: 'center' }}
-                            />
-                          </div>
-                        )
-                      }
+                <Card>
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      height: '500px',
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}
+                  >
+                    <h1 style={{ marginTop: '20px', fontSize: '30px' }}>
+                      Skor ujian yang di Proleh{' '}
+                    </h1>
+                    <h1
+                      style={{
+                        fontSize: '60px',
+                        marginTop: '30px',
+                        color: 'blue',
+                        textDecoration: 'underline'
+                      }}
                     >
-                      <Card.Meta
-                        description={
-                          <List>
-                            <List.Item>
-                              <List.Item.Meta
-                                avatar={<Avatar icon="user" />}
-                                title="Nama"
-                                description={skor.soalMahasiswa.mahasiswa.nama}
-                              />
-                            </List.Item>
-                            <List.Item>
-                              <List.Item.Meta
-                                avatar={<Avatar icon="info" />}
-                                title="NIM"
-                                description={skor.soalMahasiswa.mahasiswa.nim}
-                              />
-                            </List.Item>
-                            <List.Item>
-                              <List.Item.Meta
-                                avatar={<Avatar icon="mail" />}
-                                title="Email"
-                                description={
-                                  skor.soalMahasiswa.mahasiswa.user.email
-                                }
-                              />
-                            </List.Item>
-                          </List>
+                      {soalMahasiswa.skor}
+                    </h1>
+                    <div>
+                      <Button
+                        type="primary"
+                        icon="home"
+                        size="large"
+                        onClick={() =>
+                          props.history.go(-(props.history.length - 1))
                         }
-                      />
-                    </Card>
-                  </Col>
-                  <Col xs={24} md={10}>
-                    <Card>
-                      <div
-                        style={{
-                          textAlign: 'center',
-                          height: '500px',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
                       >
-                        <h1>Skor Hasil Ujian</h1>
-                        <h1>{skor.nilai}</h1>
-                        <div>
-                          <Button
-                            onClick={() =>
-                              props.history.go(-(props.history.length - 1))
-                            }
-                          >
-                            OK
-                          </Button>
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                </Row>
+                        OK
+                      </Button>
+                    </div>
+                    <div style={{ marginTop: '4rem' }}>
+                      <i>
+                        Untuk mereview ujian yang telah dilaksanakan, silahkan
+                        buka di aplikasi portal CBT FMIPA UR
+                      </i>
+                    </div>
+                  </div>
+                </Card>
               );
             }}
           </Query>

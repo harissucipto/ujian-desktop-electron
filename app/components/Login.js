@@ -59,7 +59,7 @@ class Login extends Component {
   state = {
     email: 'mahasiswa1@gmail.com',
     password: '23',
-    pinUjian: 'XqH62jUC2'
+    pinUjian: 'otc3QxlKD'
   };
 
   saveToState = e => {
@@ -165,7 +165,6 @@ class Login extends Component {
                     >
                       Log in
                     </Button>
-                    <Link to="/">Home</Link>
                   </Form.Item>
                 </Form>
               );
