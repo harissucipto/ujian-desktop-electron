@@ -45,27 +45,40 @@ const InformasiUjian = props => {
         return (
           <Card title="Informasi Peserta Ujian " loading={loading}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Avatar shape="square" src={infoPesertaUjian.mahasiswa.image} size={200} />
+              <Avatar
+                shape="square"
+                src={infoPesertaUjian.mahasiswa.image}
+                size={200}
+              />
             </div>
 
             <List>
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="user" />}
+                  avatar={
+                    <Avatar
+                      icon="user"
+                      style={{ backgroundColor: 'goldenrod' }}
+                    />
+                  }
                   title="Nama"
                   description={infoPesertaUjian.mahasiswa.nama}
                 />
               </List.Item>
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="info" />}
+                  avatar={
+                    <Avatar icon="info" style={{ backgroundColor: 'blue' }} />
+                  }
                   title="NIM"
                   description={infoPesertaUjian.mahasiswa.nim}
                 />
               </List.Item>
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
+                  avatar={
+                    <Avatar icon="mail" style={{ backgroundColor: 'orange' }} />
+                  }
                   title="Email"
                   description={infoPesertaUjian.email}
                 />

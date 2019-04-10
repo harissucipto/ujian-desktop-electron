@@ -7,7 +7,8 @@ import {
   Input,
   Spin,
   Popconfirm,
-  Icon
+  Icon,
+  message
 } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import gql from 'graphql-tag';
@@ -36,7 +37,9 @@ const TampilkanSoal = props => (
           title="Anda ingin mengakhiri ujian？"
           icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
           onConfirm={async () => {
-            const { data } = await createSkor();
+            const { data } = await createSkor().catch(() =>
+              message.error('Silahkan klik ulang, koneksi internet bermasalah!')
+            );
             props.history.push({
               pathname: '/hasil',
               state: {

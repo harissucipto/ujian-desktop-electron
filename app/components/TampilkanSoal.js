@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, List, Avatar, Button, Input, Row, Col } from 'antd';
+import { Card, List, Avatar, Button, Input, Row, Col, message } from 'antd';
 import gql from 'graphql-tag';
 import { ApolloConsumer } from 'react-apollo';
 import { ConvertFromRaw, EditorState } from 'draft-js';
@@ -49,11 +49,12 @@ const TampilkanSoal = props => {
       pegangan
     };
 
-    console.log(ngejawab, 'ngejawab');
-    await client.mutate({
-      mutation: UPDATE_JAWABAN,
-      variables: ngejawab
-    });
+    await client
+      .mutate({
+        mutation: UPDATE_JAWABAN,
+        variables: ngejawab
+      })
+      .catch(() => message.error('Eror Tidak Bisa update Jawaban Koneksi'));
   };
 
   const findJawaban = props.jawaban.filter(
@@ -98,7 +99,7 @@ const TampilkanSoal = props => {
                           item !== null ? item.jawaban.id === jawab.id : false
                         ).length
                           ? 'primary'
-                          : 'danger'
+                          : 'dashed'
                       }
                       onClick={() => {
                         console.log(jawab.pegangan, 'dari jawaban');

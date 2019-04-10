@@ -10,10 +10,10 @@ const InformasiUjian = props => {
           key={soal.id}
           type={
             tampilkan === soal.id
-              ? 'default'
+              ? 'dashed'
               : jawaban.filter(jawab => jawab.idSoal === soal.id).length
-              ? 'danger'
-              : 'primary'
+              ? 'primary'
+              : 'danger'
           }
           style={{ marginRight: '5px' }}
           onClick={() => navigasi(soal.id)}

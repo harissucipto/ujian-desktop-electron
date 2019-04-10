@@ -57,9 +57,9 @@ const SubLogo = styled.div`
 
 class Login extends Component {
   state = {
-    email: 'mahasiswa1@gmail.com',
-    password: '23',
-    pinUjian: 'otc3QxlKD'
+    email: '',
+    password: '',
+    pinUjian: ''
   };
 
   saveToState = e => {
@@ -135,6 +135,7 @@ class Login extends Component {
                       }
                       type="password"
                       name="password"
+                      value={this.state.password}
                       onChange={this.saveToState}
                       required
                       placeholder="password"

@@ -65,7 +65,9 @@ const InformasiUjian = props => {
             <List>
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
+                  avatar={
+                    <Avatar icon="info" style={{ backgroundColor: 'maroon' }} />
+                  }
                   title={<a>Nama Ujian</a>}
                   description={infoUjian.nama}
                 />
@@ -73,7 +75,12 @@ const InformasiUjian = props => {
 
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
+                  avatar={
+                    <Avatar
+                      icon="schedule"
+                      style={{ backgroundColor: 'brown' }}
+                    />
+                  }
                   title={<a>Waktu Pelaksanaan</a>}
                   description={infoUjian.tanggalPelaksanaan}
                 />
@@ -81,21 +88,30 @@ const InformasiUjian = props => {
 
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
+                  avatar={
+                    <Avatar
+                      icon="schedule"
+                      style={{ backgroundColor: 'olive' }}
+                    />
+                  }
                   title={<a>Durasi Ujian</a>}
                   description={`${infoUjian.durasiPengerjaan} menit`}
                 />
               </List.Item>
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
+                  avatar={
+                    <Avatar icon="info" style={{ backgroundColor: 'teal' }} />
+                  }
                   title={<a>Jurusan</a>}
                   description={infoUjian.prodi.jurusan.nama}
                 />
               </List.Item>
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
+                  avatar={
+                    <Avatar icon="info" style={{ backgroundColor: 'navy' }} />
+                  }
                   title={<a>Prodi</a>}
                   description={infoUjian.prodi.nama}
                 />
@@ -103,7 +119,9 @@ const InformasiUjian = props => {
 
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
+                  avatar={
+                    <Avatar icon="user" style={{ backgroundColor: 'black' }} />
+                  }
                   title={<a>Dosen</a>}
                   description={infoUjian.dosen ? infoUjian.dosen.nama : '-'}
                 />
@@ -111,7 +129,9 @@ const InformasiUjian = props => {
 
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
+                  avatar={
+                    <Avatar icon="info" style={{ backgroundColor: 'lime' }} />
+                  }
                   title={<a>Kelas</a>}
                   description={`${infoUjian.kelas.nama}`}
                 />
@@ -119,7 +139,9 @@ const InformasiUjian = props => {
 
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
+                  avatar={
+                    <Avatar icon="key" style={{ backgroundColor: 'green' }} />
+                  }
                   title={<a> Mata Kuliah</a>}
                   description={infoUjian.kelas.mataKuliah.nama}
                 />
@@ -127,7 +149,12 @@ const InformasiUjian = props => {
 
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="mail" />}
+                  avatar={
+                    <Avatar
+                      icon="pushpin"
+                      style={{ backgroundColor: 'purple' }}
+                    />
+                  }
                   title={<a>Jumlah Soal</a>}
                   description={infoUjian.JumlahSoal}
                 />
