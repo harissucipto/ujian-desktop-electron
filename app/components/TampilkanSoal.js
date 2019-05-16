@@ -1,5 +1,15 @@
 import React from 'react';
-import { Card, List, Avatar, Button, Input, Row, Col, message } from 'antd';
+import {
+  Card,
+  List,
+  Avatar,
+  Button,
+  Input,
+  Row,
+  Col,
+  message,
+  Icon
+} from 'antd';
 import gql from 'graphql-tag';
 import { ApolloConsumer } from 'react-apollo';
 import { ConvertFromRaw, EditorState } from 'draft-js';
@@ -66,12 +76,39 @@ const TampilkanSoal = props => {
   console.log(pegangan, 'ini peganganku');
 
   return (
-    <Card title="Tampilan Soal">
+    <Card
+      title={`Tampilan Soal Nomor ${props.noSoal} dari ${
+        props.banyakSoal
+      } Soal`}
+      extra={
+        <Button.Group>
+          <Button
+            type="primary"
+            key={22}
+            style={{ marginRight: '20px' }}
+            onClick={props.mundur}
+            disabled={props.noSoal <= 1}
+          >
+            <Icon type="left" />
+            Sebelumnya
+          </Button>
+          <Button
+            type="primary"
+            key={222}
+            onClick={props.maju}
+            disabled={props.banyakSoal === props.noSoal}
+          >
+            Selanjutnya
+            <Icon type="right" />
+          </Button>
+        </Button.Group>
+      }
+    >
       <Row>
         {image && (
           <img
             src={`${image}?${Date.now()}`}
-            width={200}
+            height={250}
             alt="Gambar pertanyaan"
           />
         )}

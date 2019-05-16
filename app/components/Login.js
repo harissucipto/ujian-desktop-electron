@@ -77,7 +77,7 @@ class Login extends Component {
       >
         <div style={{ width: '400px', marginTop: '12rem' }}>
           <Logo>
-            <img src="./logo.svg" alt="logo" />
+            <img src="logo-ur.png" alt="logo" />
             <h1>CBT FMIPA UR</h1>
           </Logo>
           <SubLogo>

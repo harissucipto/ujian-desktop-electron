@@ -6,18 +6,16 @@ import { withRouter } from 'react-router-dom';
 
 const INFO_UJIAN_QUERY = gql`
   query INFO_UJIAN_QUERY($id: String!, $jwt: String!) {
-    soalUjianMahasiswa(id: $id, jwt: $jwt) {
+    infoUjian(id: $id, jwt: $jwt) {
       id
-      ujian {
+      soals {
         id
-      }
-      urutan
-      jawaban {
-        id
-        pegangan
-        idSoal
+        image
+        pertanyaan
         jawaban {
+          image
           id
+          content
           title
         }
       }

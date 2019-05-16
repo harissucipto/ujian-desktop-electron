@@ -54,7 +54,7 @@ const Hasil = props => {
       >
         <div>
           <Logo>
-            <img src="./logo.svg" alt="logo" />
+            <img src="logo-ur.png" alt="logo" />
             <h1 style={{ color: 'white' }}>CBT FMIPA UR</h1>
           </Logo>
         </div>

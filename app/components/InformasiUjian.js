@@ -30,8 +30,10 @@ const INFO_UJIAN_QUERY = gql`
       }
       tanggalPelaksanaan
       lokasi
-      JumlahSoal
       durasiPengerjaan
+      soals {
+        id
+      }
     }
   }
 `;
@@ -54,7 +56,7 @@ const InformasiUjian = props => {
     <QueryInfoUjian id={id} jwt={jwt}>
       {({ data, loading, error }) => {
         if (loading) return <p>loading...</p>;
-        if (error) console.log(error);
+        if (error) console.log(error, 'ini eror dari sini');
         if (error) return <p>Error</p>;
         console.log(data);
 
@@ -156,7 +158,7 @@ const InformasiUjian = props => {
                     />
                   }
                   title={<a>Jumlah Soal</a>}
-                  description={infoUjian.JumlahSoal}
+                  description={infoUjian.soals.length}
                 />
               </List.Item>
             </List>

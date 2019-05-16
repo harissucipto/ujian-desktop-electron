@@ -7,6 +7,7 @@ import NavigasiSoal from './NavigasiSoal';
 import TampilkanSoal from './TampilkanSoal';
 import InformasiMulaiUjian from './InformasiMulaiUjian2';
 import AkhiriUjian from './AkhiriUjian';
+import BankSoal from './BankSoal';
 
 import Soal from './Soal';
 
@@ -18,7 +19,8 @@ class AppUjian extends Component {
     ujian: undefined,
     soals: [],
     tampilkan: 0,
-    jawaban: []
+    jawaban: [],
+    noSoal: 1
   };
 
   componentWillMount() {
@@ -32,7 +34,24 @@ class AppUjian extends Component {
     });
   }
 
-  pindahSoal = id => this.setState({ tampilkan: id });
+  pindahSoal = id => {
+    const noSoal = this.state.soals.findIndex(item => item.id === id) + 1;
+    this.setState({ tampilkan: id, noSoal });
+  };
+
+  majuSoal = () => {
+    const noSoal = this.state.noSoal;
+
+    const { id } = this.state.soals[noSoal];
+    this.setState({ tampilkan: id, noSoal: noSoal + 1 });
+  };
+
+  mundurSoal = () => {
+    const noSoal = this.state.noSoal - 1;
+    if (noSoal === 0) return;
+    const { id } = this.state.soals[noSoal - 1];
+    this.setState({ tampilkan: id, noSoal });
+  };
 
   menjawabSoal = jawab => {
     // pishakan jawaban berupa idsoal, jawaban
@@ -61,6 +80,8 @@ class AppUjian extends Component {
             </Col>
             <Col xs={24} md={12}>
               <TampilkanSoal
+                noSoal={this.state.noSoal}
+                banyakSoal={this.state.soals.length}
                 soal={
                   this.state.soals.filter(
                     soal => soal.id === this.state.tampilkan
@@ -70,6 +91,8 @@ class AppUjian extends Component {
                 menjawab={this.menjawabSoal}
                 id={this.state.id}
                 ujian={this.state.ujian}
+                maju={this.majuSoal}
+                mundur={this.mundurSoal}
               />
             </Col>
             <Col xs={24} md={6}>
@@ -108,23 +131,41 @@ const Persiapan = props => {
       >
         <div>
           <Logo>
-            <img src="./logo.svg" alt="logo" />
+            <img src="logo-ur.png" alt="logo" />
             <h1 style={{ color: 'white' }}>CBT FMIPA UR</h1>
           </Logo>
         </div>
       </Header>
-      <Soal id={id} jwt={jwt}>
+      <BankSoal id={id} jwt={jwt}>
         {({ data, error, loading }) => {
-          if (loading) return <p>loading....</p>;
-          if (error) console.log(error);
-
-          console.log(data, 'ini data soal mahasiswa');
-
+          if (loading) return <p>loading</p>;
+          if (error) return <p>Server gangguan</p>;
+          const { soals } = data.infoUjian;
+          console.log(soals, 'ini soals nya');
           return (
-            <AppUjian bankSoal={data.soalUjianMahasiswa} id={id} jwt={jwt} />
+            <Soal id={id} jwt={jwt}>
+              {({ data, error, loading }) => {
+                if (loading) return <p>loading....</p>;
+                if (error) console.log(error);
+
+                const mengurutkanSoal = data.soalUjianMahasiswa.urutan
+                  .split(',')
+                  .map(urutan => {
+                    const index = Number(urutan) - 1;
+                    return soals[index];
+                  });
+
+                const bankSoal = {
+                  ...data.soalUjianMahasiswa,
+                  soals: mengurutkanSoal
+                };
+
+                return <AppUjian bankSoal={bankSoal} id={id} jwt={jwt} />;
+              }}
+            </Soal>
           );
         }}
-      </Soal>
+      </BankSoal>
     </Layout>
   );
 };
